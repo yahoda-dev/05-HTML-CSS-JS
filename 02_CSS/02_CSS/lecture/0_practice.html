@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      /* class 선택자인 `.`을 사용 */
+      .container {
+        display: flex;
+        border: 2px black dashed;
+        background-color: grey;
+        margin-top: 10px;
+        gap: 10px;
+        height: 600px;
+      }
+
+      .fl-di {
+        flex-direction: column;
+        display: flex;
+        border: 2px black dashed;
+        background-color: grey;
+        margin-top: 10px;
+        gap: 10px;
+      }
+
+      .item {
+        background: greenyellow;
+        color: black;
+        padding: 15px;
+        text-align: center;
+        width: 200px;
+        height: 100px;
+      }
+
+      p {
+        font-weight: 800;
+      }
+
+      .wrap {
+        flex-wrap: wrap;
+      }
+
+      .jc {
+        justify-content: center;
+      }
+
+      .ai {
+        justify-content: center;
+        align-items: center;
+      }
+    </style>
+  </head>
+  <!-- ------------------------------------------------------------- -->
+  <body>
+    <h1>FLEX 연습</h1>
+    <!-- ------------------------------------------------------------- -->
+    <p>flex-direction: row (아이템을 가로로 배치)</p>
+    <div class="container">
+      <div class="item">1</div>
+      <div class="item">2</div>
+      <div class="item">3</div>
+    </div>
+    <!-- ------------------------------------------------------------- -->
+    <p>flex-direction: column (아이템을 세로로 배치)</p>
+    <div class="container fl-di">
+      <div class="item">1</div>
+      <div class="item">2</div>
+      <div class="item">3</div>
+    </div>
+    <!-- ------------------------------------------------------------- -->
+    <p>flex-wrap: wrap (아이템이 넘칠 때 자동 줄바꿈)</p>
+    <div class="container wrap">
+      <div class="item">1</div>
+      <div class="item">2</div>
+      <div class="item">3</div>
+    </div>
+    <!-- ------------------------------------------------------------- -->
+    <p>justify-content: center (기준축 정렬)</p>
+    <div class="container wrap jc">
+      <div class="item">1</div>
+      <div class="item">2</div>
+      <div class="item">3</div>
+    </div>
+        <!-- ------------------------------------------------------------- -->
+    <p>align-items: center (교차축 정렬)</p>
+    <div class="container wrap ai">
+      <div class="item">1</div>
+      <div class="item">2</div>
+      <div class="item">3</div>
+      <div class="item">4</div>
+      <div class="item">5</div>
+      <div class="item">6</div>
+      <div class="item">7</div>
+      <div class="item">8</div>
+      <div class="item">9</div>
+    </div>
+  </body>
+</html>

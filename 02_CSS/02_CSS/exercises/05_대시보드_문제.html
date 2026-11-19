@@ -1,43 +1,56 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ko">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <style>
-        /* 아래 기본 스타일은 완성되어 있다. 수정하지 않는다. */
-        * {
-            box-sizing: border-box;
-        }
+      /* 아래 기본 스타일은 완성되어 있다. 수정하지 않는다. */
+      * {
+        box-sizing: border-box;
+      }
 
-        body {
-            margin: 0;
-            padding: 16px;
-            font-family: "Malgun Gothic", sans-serif;
-            background: #f5f5f5;
-        }
+      body {
+        margin: 0;
+        padding: 16px;
+        font-family: "Malgun Gothic", sans-serif;
+        background: #f5f5f5;
+      }
 
-        .head { background: #1565c0; color: white; }
-        .side { background: #6a1b9a; color: white; }
-        .main { background: white; }
-        .foot { background: #455a64; color: white; }
+      .head {
+        background: #1565c0;
+        color: white;
+      }
+      .side {
+        background: #6a1b9a;
+        color: white;
+      }
+      .main {
+        background: white;
+      }
+      .foot {
+        background: #455a64;
+        color: white;
+      }
 
-        .head, .side, .main, .foot {
-            padding: 16px;
-        }
+      .head,
+      .side,
+      .main,
+      .foot {
+        padding: 16px;
+      }
 
-        .card {
-            background: #e3f2fd;
-            border: 1px solid #90caf9;
-            padding: 16px;
-            text-align: center;
-        }
+      .card {
+        background: #e3f2fd;
+        border: 1px solid #90caf9;
+        padding: 16px;
+        text-align: center;
+      }
 
-        /* ============================================================
+      /* ============================================================
            여기부터 작성한다. HTML은 수정하지 않는다.
            ============================================================ */
 
-        /* TODO 1. 대시보드 전체 틀 (.dashboard)
+      /* TODO 1. 대시보드 전체 틀 (.dashboard)
            - grid로 만든다.
            - 열 구조 : 왼쪽 사이드바 180px 고정, 오른쪽 본문은 나머지 전부
            - 행 구조 : 헤더 60px, 본문은 나머지 전부, 푸터 50px
@@ -45,9 +58,39 @@
            - 전체 높이 500px
 
            힌트: 나머지를 전부 차지하게 하는 단위가 있다. */
+      .dashboard {
+        display: grid;
+        grid-template-columns: 180px 1fr;
+        grid-template-rows: 60px 1fr 50px;
+        gap: 12px;
+        height: 500px;
+        grid-template-areas:
+          "header  header"
+          "sidebar main"
+          "footer  footer";
+      }
+      .head {
+        grid-area: header;
+      }
+      .side {
+        grid-area: sidebar;
+      }
 
+      .main {
+        grid-area: main;
+      }
 
-        /* TODO 2. 영역 이름 붙이기 (.dashboard)
+      .foot {
+        grid-area: footer;
+      }
+      .cards {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+        gap: 12px;
+        margin-top: 16px;
+      }
+
+      /* TODO 2. 영역 이름 붙이기 (.dashboard)
            - grid-template-areas로 아래 배치를 만든다.
 
                header   header
@@ -60,8 +103,7 @@
              .main -> main
              .foot -> footer */
 
-
-        /* TODO 3. 카드 목록 (.cards)
+      /* TODO 3. 카드 목록 (.cards)
            - .main 안의 카드 6개를 격자로 배치한다.
            - 화면 폭에 따라 열 개수가 저절로 바뀌게 한다.
              · 칸 하나의 최소 너비는 140px
@@ -73,8 +115,7 @@
            힌트: repeat()의 첫 인자에 숫자 말고 다른 값을 넣을 수 있다.
                  두 번째 인자에는 최소/최대를 지정하는 함수를 쓴다. */
 
-
-        /* TODO 4. 모바일 대응 (미디어 쿼리)
+      /* TODO 4. 모바일 대응 (미디어 쿼리)
            - 화면 폭이 700px 이하일 때 아래처럼 바뀌게 한다.
              · 열 구조를 한 줄로 바꾼다. (사이드바가 본문 위로 올라온다)
              · 행 구조는 헤더 60px / 사이드바 auto / 본문 auto / 푸터 50px
@@ -86,11 +127,23 @@
              · 전체 높이 고정을 풀어준다. (힌트: height를 auto로)
 
            브라우저 폭을 줄여가며 확인한다. */
+      @media (max-width: 700px) {
+        .dashboard {
+          grid-template-columns: 1fr;
+          grid-template-rows: 60px auto auto 50px;
+          grid-template-areas:
+            "header"
+            "sidebar"
+            "main"
+            "footer";
+          height: auto;
+        }
+      }
     </style>
     <title>[문제] 대시보드 레이아웃</title>
-</head>
+  </head>
 
-<!--
+  <!--
 ================================================================================
  05. 대시보드 레이아웃 - grid와 반응형
 
@@ -150,26 +203,25 @@
 ================================================================================
 -->
 
-<body>
+  <body>
     <div class="dashboard">
-        <header class="head">header</header>
+      <header class="head">header</header>
 
-        <aside class="side">sidebar (180px)</aside>
+      <aside class="side">sidebar (180px)</aside>
 
-        <main class="main">
-            <h3>main</h3>
-            <div class="cards">
-                <div class="card">카드 1</div>
-                <div class="card">카드 2</div>
-                <div class="card">카드 3</div>
-                <div class="card">카드 4</div>
-                <div class="card">카드 5</div>
-                <div class="card">카드 6</div>
-            </div>
-        </main>
+      <main class="main">
+        <h3>main</h3>
+        <div class="cards">
+          <div class="card">카드 1</div>
+          <div class="card">카드 2</div>
+          <div class="card">카드 3</div>
+          <div class="card">카드 4</div>
+          <div class="card">카드 5</div>
+          <div class="card">카드 6</div>
+        </div>
+      </main>
 
-        <footer class="foot">footer</footer>
+      <footer class="foot">footer</footer>
     </div>
-</body>
-
+  </body>
 </html>

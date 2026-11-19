@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      .log-button {
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <button class="log-button" type="button">클릭</button>
+
+    <script>
+      console.log("로그입니다.");
+      const button = document.querySelector(".log-button");
+      let count = 0;
+
+      button.addEventListener("click", function () {
+        count = count + 1;
+        console.log("버튼이 클릭되었습니다. 횟수 : " + count);
+      });
+    </script>
+  </body>
+</html>
