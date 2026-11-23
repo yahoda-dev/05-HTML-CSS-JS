@@ -17,3 +17,11 @@ const {price : p1, productName: n1} = pants;
 
 console.log(p1);
 console.log(n1);
+
+const id = 'p-00001';
+const made = { id, price };
+
+const {id: gotid} = made;
+
+console.log(gotid);
+console.log(made.price);
