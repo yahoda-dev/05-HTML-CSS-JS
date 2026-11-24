@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>05_사용자 입력 양식 이벤트</title>
+    <style>
+        form { border: 1px solid #ccc; padding: 16px; width: 460px; }
+        #log { background: #f4f4f4; padding: 10px; min-height: 100px; font-family: monospace; }
+        label { display: inline-block; width: 70px; }
+    </style>
+</head>
+
+<body>
+    <h1>05. 사용자 입력 양식 이벤트</h1>
+
+    <form name="memberjoin">
+        <label for="username">이름</label>
+        <input type="text" name="username" id="username" value="홍길동">
+        <br><br>
+
+        <label>성별</label>
+        <input type="radio" name="gender" id="male" value="m" checked><label for="male">남자</label>
+        <input type="radio" name="gender" id="female" value="f"><label for="female">여자</label>
+        <br><br>
+
+        <label>나이</label>
+        <select id="age" name="age">
+            <option value="10">10대 이하</option>
+            <option value="20">20대</option>
+            <option value="30">30대</option>
+        </select>
+        <br><br>
+
+        <label>약관</label>
+        <input type="checkbox" id="agree" name="agree"> 동의합니다
+        <br><br>
+
+        <label>자기소개</label>
+        <textarea name="introduce" rows="4" cols="34" maxlength="100" placeholder="자기소개를 입력하세요"></textarea>
+        <div>글자 수 : <span id="counter">0</span> / 100</div>
+    </form>
+
+    <h3>실행 결과</h3>
+    <div id="log"></div>
+
+    <script>
+        const $log = document.getElementById('log');
+
+        function log(message) {
+            $log.insertAdjacentHTML('beforeend', `<div>${message}</div>`);
+            console.log(message);
+        }
+
+    </script>
+
+</body>
+
+</html>

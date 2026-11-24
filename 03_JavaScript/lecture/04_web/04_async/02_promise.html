@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>02_Promise</title>
+    <style>
+        #log { background: #f4f4f4; padding: 10px; min-height: 120px; font-family: monospace; }
+    </style>
+</head>
+
+<body>
+    <h1>02. Promise</h1>
+
+    <button id="btn1">1초 뒤 성공하는 Promise</button>
+    <button id="btn2">1초 뒤 실패하는 Promise</button>
+    <button id="btn3">체인으로 이어붙이기</button>
+
+    <h3>실행 결과</h3>
+    <div id="log"></div>
+
+    <script>
+        const $log = document.getElementById('log');
+
+        function log(message) {
+            $log.insertAdjacentHTML('beforeend', `<div>${message}</div>`);
+            console.log(message);
+        }
+
+    </script>
+
+</body>
+
+</html>
