@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>03_async와 await</title>
+    <style>
+      #log {
+        background: #f4f4f4;
+        padding: 10px;
+        min-height: 120px;
+        font-family: monospace;
+      }
+    </style>
+  </head>
+
+  <body>
+    <h1>03. async와 await</h1>
+
+    <button id="btn1">순서대로 실행 (await)</button>
+    <button id="btn2">오류 처리 (try/catch)</button>
+    <button id="btn3">사용자 가져오기 (200)</button>
+    <button id="btn4">없는 사용자 가져오기 (404)</button>
+
+    <h3>실행 결과</h3>
+    <div id="log"></div>
+
+    <script>
+      const $log = document.getElementById("log");
+
+      function wait(ms, shouldFail = false) {
+        return new Promise((resolve, reject) => {
+          setTimeout(() => {
+            if (shouldFail) {
+              reject(new Error(`${ms}ms 후 실패했다.`));
+            } else {
+              resolve(`${ms}ms 후 성공했다.`);
+            }
+          }, ms);
+        });
+      }
+
+      function log(message) {
+        $log.insertAdjacentHTML("beforeend", `<div>${message}</div>`);
+        console.log(message);
+      }
+
+      document.getElementById("btn1").addEventListener("click", async () => {
+        log("시작");
+
+        const r1 = await wait(500);
+        log("1단계 : " + r1);
+        const r2 = await wait(500);
+        log("2단계 : " + r2);
+        const r3 = await wait(500);
+        log("3단계 : " + r3);
+
+        log("종료");
+      });
+
+      document.getElementById("btn2").addEventListener("click", async () => {
+        try {
+          const result = await wait(500, true);
+          log("실행되지 않아야 하는 로그");
+        } catch (error) {
+          log(`오류를 잡았다: ${error.message}`);
+        } finally {
+          log("finally");
+        }
+      });
+
+      // fetch로 실제 요청 보내기
+      const API = "https://jsonplaceholder.typicode.com";
+
+      async function getUser(id) {
+        try {
+          const res = await fetch(`${API}/users/${id}`);
+
+          if (!res.ok) {
+            throw new Error(`요청 실패 : ${res.status}`);
+          }
+
+          const user = await res.json();
+
+          log(`${id}번 이름: ${user.name} / 이메일 : ${user.email}`);
+        } catch (error) {
+          log(`${id}번 에러 잡음: ${error.message}`);
+        }
+      }
+
+      document.getElementById("btn3").addEventListener("click", () => {
+        log("버튼 클릭");
+        getUser(1);
+      });
+      document.getElementById("btn4").addEventListener("click", () => {
+        log("버튼 클릭");
+        getUser(999);
+      });
+    </script>
+  </body>
+</html>

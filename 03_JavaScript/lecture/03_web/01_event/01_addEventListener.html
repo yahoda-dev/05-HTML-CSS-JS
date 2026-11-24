@@ -3,37 +3,43 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>03_async와 await</title>
+    <title>01_이벤트 핸들러 등록</title>
     <style>
       #log {
         background: #f4f4f4;
         padding: 10px;
-        min-height: 120px;
+        min-height: 80px;
         font-family: monospace;
       }
     </style>
   </head>
 
   <body>
-    <h1>03. async와 await</h1>
+    <h1>01. 이벤트 핸들러 등록</h1>
 
-    <button id="btn1">순서대로 실행 (await)</button>
-    <button id="btn2">오류 처리 (try/catch)</button>
-    <button id="btn3">사용자 가져오기 (200)</button>
-    <button id="btn4">없는 사용자 가져오기 (404)</button>
+    <button id="btn">눌러 보세요</button>
 
     <h3>실행 결과</h3>
     <div id="log"></div>
 
     <script>
       const $log = document.getElementById("log");
+      const $btn = document.getElementById("btn");
+
+      $btn.addEventListener("click", () => log("첫번째 핸들러"));
+      $btn.addEventListener("click", () => log("두 번째 핸들러"));
+
+      function handleMouseOver() {
+        log("마우스가 올라왔습니다.");
+      }
+      $btn.addEventListener("mouseover", handleMouseOver);
 
       function log(message) {
         $log.insertAdjacentHTML("beforeend", `<div>${message}</div>`);
         console.log(message);
       }
 
+      log($btn);
     </script>
-
   </body>
 </html>

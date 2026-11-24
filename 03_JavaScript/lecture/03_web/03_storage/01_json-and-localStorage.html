@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>01_JSON과 localStorage</title>
+    <style>
+      #log {
+        background: #f4f4f4;
+        padding: 10px;
+        min-height: 120px;
+        font-family: monospace;
+      }
+      li {
+        margin: 4px 0;
+      }
+    </style>
+  </head>
+
+  <body>
+    <h1>01. JSON과 localStorage</h1>
+
+    <h3>1. JSON 변환</h3>
+    <button id="jsonBtn">변환해 보기</button>
+
+    <h3>2. 할 일 목록 저장</h3>
+    <input type="text" id="todoInput" placeholder="할 일을 입력하세요" />
+    <button id="addBtn">추가</button>
+    <button id="resetBtn">전부 지우기</button>
+    <ul id="todoList"></ul>
+
+    <h3>실행 결과</h3>
+    <div id="log"></div>
+
+    <script>
+      const $log = document.getElementById("log");
+
+      function log(message) {
+        $log.insertAdjacentHTML("beforeend", `<div>${message}</div>`);
+        console.log(message);
+      }
+
+      document.getElementById("jsonBtn").addEventListener("click", () => {
+        const user = { name: "홍길동", age: 20 };
+
+        const text = JSON.stringify(user);
+        //log(`stringify: ${text} (${typeof text})`);
+        const parsed = JSON.parse(text);
+        //log(`parse: ${parsed} (${typeof parsed})`);
+
+        // 변환 없이 객체 저장
+        localStorage.setItem("wrongUser", user);
+        log(`객체로 저장: ${localStorage.getItem("wrongUser")}`);
+
+        localStorage.removeItem("wrongUser");
+
+        localStorage.setItem("goodUser", text);
+        log(`텍스트로 저장: ${localStorage.getItem("goodUser")}`);
+      });
+
+      function loadTodos() {
+        return JSON.parse(localStorage.getItem(STORAGE_KEY)) ?? [];
+      }
+
+      function render(todo) {
+        $todoList.innerHTML = "";
+
+        todos.forEach((todo) => {
+          $todoList.insertAdjacentHTML("beforeend", `<li>${todo.text}</li>`);
+        });
+      }
+
+      const STORAGE_KEY = "todos"; // LocalStorage에 저장할 item key 값
+      const $inputText = document.getElementById("todoInput");
+      const $todoList = document.getElementById("todoList");
+      let todos = loadTodos();
+
+      render(todos);
+
+      document.getElementById("addBtn").addEventListener("click", () => {
+        const text = $inputText.value.trim();
+
+        if (!text) return;
+
+        todos = [...todos, { id: Date.now(), text }];
+
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(todos));
+        render(todos);
+        $inputText.value = "";
+      });
+
+      document.getElementById("resetBtn").addEventListener("click", () => {
+        localStorage.removeItem(STORAGE_KEY);
+        todos = [];
+        render(todos);
+      });
+    </script>
+  </body>
+</html>

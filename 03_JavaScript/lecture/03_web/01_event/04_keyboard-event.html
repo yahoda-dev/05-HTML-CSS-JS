@@ -4,24 +4,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>01_JSON과 localStorage</title>
+    <title>04_키보드 이벤트</title>
     <style>
         #log { background: #f4f4f4; padding: 10px; min-height: 120px; font-family: monospace; }
-        li { margin: 4px 0; }
+        input { padding: 6px; width: 260px; }
     </style>
 </head>
 
 <body>
-    <h1>01. JSON과 localStorage</h1>
+    <h1>04. 키보드 이벤트</h1>
 
-    <h3>1. JSON 변환</h3>
-    <button id="jsonBtn">변환해 보기</button>
-
-    <h3>2. 할 일 목록 저장</h3>
-    <input type="text" id="todoInput" placeholder="할 일을 입력하세요">
-    <button id="addBtn">추가</button>
-    <button id="resetBtn">전부 지우기</button>
-    <ul id="todoList"></ul>
+    <input type="text" id="keyInput" placeholder="아무 키나 눌러보세요">
 
     <h3>실행 결과</h3>
     <div id="log"></div>
@@ -34,7 +27,19 @@
             console.log(message);
         }
 
+        document.getElementById("keyInput").addEventListener(
+            "keydown",
+            (e) => {
+                log(`key: ${e.key}`);
+
+                if(e.key === "Enter") {
+                    log(`-> Enter: 여기서 검색`);
+                }
+            }
+        )
+
     </script>
+
 </body>
 
 </html>
