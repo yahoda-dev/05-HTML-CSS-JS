@@ -14,21 +14,24 @@
 // ✅ 확인: Enter로 보내고 바로 이어서 입력할 수 있다 (마우스로 다시 클릭할 필요 없음)
 // ⚠️ ref.current 는 이벤트 핸들러 안에서만 쓰자. 렌더링 중(return 위)에는 아직 DOM이 없을 수 있다
 // 📖 막히면: 08-3 예제
-import { useState } from 'react'
+import { useState, useRef } from "react";
 
 export default function Mission() {
-  const [text, setText] = useState('')
-  const [messages, setMessages] = useState(['안녕하세요! 👋'])
+  const [text, setText] = useState("");
+  const [messages, setMessages] = useState(["안녕하세요! 👋"]);
+  const ref = useRef(null);
 
   function handleSubmit(e) {
-    e.preventDefault()
+    e.preventDefault();
     if (!text.trim()) {
       // TODO 4
-      return
+      ref.current.focus();
+      return;
     }
-    setMessages([...messages, text.trim()])
-    setText('')
+    setMessages([...messages, text.trim()]);
+    setText("");
     // TODO 3
+    ref.current.focus();
   }
 
   return (
@@ -41,11 +44,18 @@ export default function Mission() {
       </article>
       <form onSubmit={handleSubmit}>
         {/* TODO 2 */}
-        <input placeholder="메시지 입력 후 Enter" value={text} onChange={(e) => setText(e.target.value)} />
+        <input
+          ref={ref}
+          placeholder="메시지 입력 후 Enter"
+          value={text}
+          onChange={(e) => setText(e.target.value)}
+        />
         <button>보내기</button>
         {/* TODO 5 */}
-        <button type="button">입력창으로</button>
+        <button type="button" onClick={() => ref.current.focus()}>
+          입력창으로
+        </button>
       </form>
     </div>
-  )
+  );
 }

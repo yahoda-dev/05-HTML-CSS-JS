@@ -15,23 +15,32 @@
 // ✅ 확인: [알림 오기]를 누를 때마다 브라우저 탭 제목이 "(3) 새 알림" 처럼 바뀐다
 // 💡 렌더링(화면 계산) → 화면 반영 → effect 실행  순서다
 // 📖 막히면: 08-4 예제
-import { useState } from 'react'
+import { useState, useEffect } from "react";
 
 export default function Mission() {
-  const [unread, setUnread] = useState(0)
-  const [name, setName] = useState('리액트')
+  const [unread, setUnread] = useState(0);
+  const [name, setName] = useState("리액트");
 
   // TODO 2~3
+  useEffect(() => {
+    const title = unread > 0 ? `(${unread}) 새 알림` : "알림 없음";
+    document.title = title;
+    console.log("탭 제목 변경:", title);
+  }, [unread]);
 
   return (
     <div>
-      <h3>🔔 {name}님의 알림: {unread}개</h3>
+      <h3>
+        🔔 {name}님의 알림: {unread}개
+      </h3>
       <button onClick={() => setUnread(unread + 1)}>알림 오기</button>
       <button onClick={() => setUnread(0)}>모두 읽음</button>
-      <button onClick={() => setName(name === '리액트' ? '훅스' : '리액트')}>이름 바꾸기</button>
+      <button onClick={() => setName(name === "리액트" ? "훅스" : "리액트")}>
+        이름 바꾸기
+      </button>
       <p>
         <small>👆 누르고 브라우저 탭 제목을 보세요</small>
       </p>
     </div>
-  )
+  );
 }

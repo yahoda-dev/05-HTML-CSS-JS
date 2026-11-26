@@ -14,36 +14,67 @@
 //
 // ✅ 확인: 어느 칸에 입력해도 아래 미리보기의 해당 키만 바뀐다
 // 📖 막히면: 06-4 예제
-import { useState } from 'react'
+import { useState } from "react";
 
-const initialForm = { receiver: '', phone: '', address: '', memo: '' }
+const initialForm = { receiver: "", phone: "", address: "", memo: "" };
 
 export default function Mission() {
-  const [form, setForm] = useState(initialForm)
+  const [form, setForm] = useState(initialForm);
 
   function handleChange(e) {
-    // TODO 3
-    console.log(e.target.name, e.target.value)
+    const { name, value } = e.target;
+    setForm({
+      ...form,
+      [name]: value,
+    });
   }
 
   return (
     <div>
       <h3>📦 배송지 입력</h3>
       {/* TODO 1~2 */}
-      <input placeholder="받는 분" />
-      <input placeholder="연락처" />
+      <input
+        name="receiver"
+        value={form.receiver}
+        placeholder="받는 분"
+        onChange={handleChange}
+      />
+      <input
+        name="phone"
+        value={form.phone}
+        placeholder="연락처"
+        onChange={handleChange}
+      />
       <br />
-      <input placeholder="주소" size={40} />
+      <input
+        name="address"
+        value={form.address}
+        placeholder="주소"
+        size={40}
+        onChange={handleChange}
+      />
       <br />
-      <input placeholder="배송 메모" size={40} />
+      <input
+        name="memo"
+        value={form.memo}
+        placeholder="배송 메모"
+        size={40}
+        onChange={handleChange}
+      />
       <br />
       {/* TODO 4 */}
-      <button>모두 지우기</button>
+      <button
+        onClick={() => {
+          setForm(initialForm);
+        }}
+      >
+        모두 지우기
+      </button>
 
       <article>
         <small>form state</small>
         <pre>{JSON.stringify(form, null, 2)}</pre>
       </article>
     </div>
-  )
+  );
 }

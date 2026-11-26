@@ -15,28 +15,37 @@
 // ✅ 확인: 아래 state 미리보기에서 바꾼 속성만 바뀌고, 나머지는 그대로 남아 있다
 // ⚠️ 일부러 setProfile({ name: e.target.value }) 로 써 보자 → job, sns가 사라진다!
 // 📖 막히면: 05-2 예제
-import { useState } from 'react'
+import { useState } from "react";
 
 export default function Mission() {
   const [profile, setProfile] = useState({
-    name: '김리액트',
-    job: '학생',
-    sns: { github: 'react-kim', blog: 'react.blog' },
-  })
+    name: "김리액트",
+    job: "학생",
+    sns: { github: "react-kim", blog: "react.blog" },
+  });
 
   function handleNameChange(e) {
-    // TODO 1
-    console.log('입력값:', e.target.value)
+    setProfile({
+      ...profile,
+      name: e.target.value,
+    });
+    console.log("입력값:", e.target.value);
   }
 
   function handleJob(job) {
-    // TODO 2
-    console.log('고른 직업:', job)
+    setProfile({
+      ...profile,
+      job: job,
+    });
+    console.log("고른 직업:", job);
   }
 
   function handleGithubChange(e) {
-    // TODO 3
-    console.log('입력값:', e.target.value)
+    setProfile({
+      ...profile,
+      sns: { ...profile.sns, github: e.target.value },
+    });
+    console.log("입력값:", e.target.value);
   }
 
   return (
@@ -47,14 +56,15 @@ export default function Mission() {
       </label>
       <p>
         직업:
-        {['학생', '개발자', '디자이너'].map((job) => (
+        {["학생", "개발자", "디자이너"].map((job) => (
           <button key={job} onClick={() => handleJob(job)}>
             {job}
           </button>
         ))}
       </p>
       <label>
-        GitHub <input value={profile.sns.github} onChange={handleGithubChange} />
+        GitHub{" "}
+        <input value={profile.sns.github} onChange={handleGithubChange} />
       </label>
 
       <article>
@@ -62,5 +72,5 @@ export default function Mission() {
         <pre>{JSON.stringify(profile, null, 2)}</pre>
       </article>
     </div>
-  )
+  );
 }

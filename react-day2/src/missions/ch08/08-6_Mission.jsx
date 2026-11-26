@@ -26,11 +26,12 @@ function StudyTimer() {
   const [seconds, setSeconds] = useState(0)
 
   useEffect(() => {
-    setInterval(() => {
+    const timerId = setInterval(() => {
       console.log('⏱ tick')
       setSeconds((prev) => prev + 1)
     }, 1000)
-    // 🐞 정리(cleanup)가 없다
+
+    return () => clearInterval(timerId)
   }, [])
 
   return <h2>⏱ {seconds}초째 공부 중</h2>

@@ -18,33 +18,39 @@
 // ✅ 확인: 어느 칸에 입력해도 반대쪽이 바로 바뀐다
 // 💡 두 컴포넌트가 같은 데이터를 써야 하면 → state를 가장 가까운 공통 부모로 올린다
 // 📖 막히면: 07-2 예제 ② 환율 계산기
-import { useState } from 'react'
+import { useState } from "react";
 
-const RATIO = 2.54 // 1 inch = 2.54 cm
+const RATIO = 2.54; // 1 inch = 2.54 cm
 
 function toInch(cm) {
-  if (cm === '') return ''
-  return String(Math.round((Number(cm) / RATIO) * 100) / 100)
+  if (cm === "") return "";
+  return String(Math.round((Number(cm) / RATIO) * 100) / 100);
 }
 
 function toCm(inch) {
-  if (inch === '') return ''
-  return String(Math.round(Number(inch) * RATIO * 100) / 100)
+  if (inch === "") return "";
+  return String(Math.round(Number(inch) * RATIO * 100) / 100);
 }
 
 // TODO 1. state를 지우고 props로 받기
-function LengthInput({ label }) {
-  const [value, setValue] = useState('')
+function LengthInput({ label, value, onChange }) {
+  // const [value, setValue] = useState('') // 문제1번 주석
   return (
     <label>
-      {label} <input type="number" value={value} onChange={(e) => setValue(e.target.value)} />
+      {label}{" "}
+      <input
+        type="number"
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+      />
     </label>
-  )
+  );
 }
 
 export default function Mission() {
   // TODO 2~3
-  console.log('변환 함수 준비됨:', toCm('1'), toInch('2.54'))
+  console.log("변환 함수 준비됨:", toCm("1"), toInch("2.54"));
+  const [amount, setAmount] = useState();
 
   return (
     <div>
@@ -53,5 +59,5 @@ export default function Mission() {
       <LengthInput label="cm" />
       <LengthInput label="inch" />
     </div>
-  )
+  );
 }

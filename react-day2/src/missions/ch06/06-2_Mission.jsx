@@ -15,29 +15,41 @@
 // ✅ 확인: 버튼으로 바꾼 값이 입력창에도 바로 보인다 = state가 입력창을 제어한다
 // ⚠️ value만 주고 onChange를 빼 보자 → 입력이 안 되고 콘솔에 경고가 뜬다
 // 📖 막히면: 06-2 예제
-import { useState } from 'react'
+import { useState } from "react";
 
-const MAX = 50
+const MAX = 50;
 
 export default function Mission() {
-  const [text, setText] = useState('')
+  const [text, setText] = useState("");
 
   return (
     <div>
       <h3>✍️ 한 줄 소개 (최대 {MAX}자)</h3>
       {/* TODO 1~2 */}
-      <textarea rows={3} cols={40} placeholder="자기소개를 입력하세요" />
+      <textarea
+        rows={3}
+        cols={40}
+        placeholder="자기소개를 입력하세요"
+        value={text}
+        onChange={(e) => setText(e.target.value.slice(0, MAX))}
+      />
       <br />
       {/* TODO 3 */}
-      <small>0 / {MAX}</small>
+      <small>
+        {text.length} / {MAX}
+      </small>
       <br />
       {/* TODO 4~5 */}
-      <button>#React 붙이기</button>
-      <button>지우기</button>
+      <button
+        onClick={() => setText((prev) => (prev + " #React").slice(0, MAX))}
+      >
+        #React 붙이기
+      </button>
+      <button onClick={() => setText("")}>지우기</button>
       <article>
         <small>미리보기</small>
-        <p>{text || '(비어 있음)'}</p>
+        <p>{text || "(비어 있음)"}</p>
       </article>
     </div>
-  )
+  );
 }

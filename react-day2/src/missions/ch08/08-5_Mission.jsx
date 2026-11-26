@@ -26,7 +26,7 @@ export default function Mission() {
   useEffect(() => {
     console.log('effect 실행:', name, lang)
     document.title = `${GREETINGS[lang]}, ${name}!`
-  }, [name]) // 🐞
+  }, [name, lang]) // 🐞
 
   return (
     <div>

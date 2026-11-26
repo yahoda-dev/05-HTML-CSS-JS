@@ -16,31 +16,43 @@
 // ✅ 확인: Enter로도 등록되고, [지우기]를 눌러도 등록되지 않는다
 // ⚠️ 2-① 을 빼고 등록해 보자 → 페이지가 새로고침되며 댓글이 사라진다
 // 📖 막히면: 06-6 예제
-import { useState } from 'react'
+import { useState } from "react";
 
 export default function Mission() {
-  const [text, setText] = useState('')
-  const [comments, setComments] = useState([{ id: 1, text: '첫 댓글!' }])
+  const [text, setText] = useState("");
+  const [comments, setComments] = useState([{ id: 1, text: "첫 댓글!" }]);
 
   function handleSubmit(e) {
-    // TODO 2
-    console.log('제출 이벤트:', e.type)
+    e.preventDefault();
+    const commentText = text.trim();
+    if (!commentText) return;
+
+    setComments((previousComments) => [
+      ...previousComments,
+      { id: Date.now(), text: commentText },
+    ]);
+    setText("");
   }
 
   return (
     <div>
       <h3>💬 댓글 ({comments.length})</h3>
-      {/* TODO 1. form으로 감싸기 */}
-      <input placeholder="댓글을 입력하세요" value={text} onChange={(e) => setText(e.target.value)} />
-      <button>등록</button>
-      {/* TODO 3 */}
-      <button onClick={() => setText('')}>지우기</button>
-
+      <form onSubmit={handleSubmit}>
+        <input
+          placeholder="댓글을 입력하세요"
+          value={text}
+          onChange={(e) => setText(e.target.value)}
+        />
+        <button type="submit">등록</button>
+        <button type="button" onClick={() => setText("")}>
+          지우기
+        </button>
+      </form>
       <ul>
         {comments.map((comment) => (
           <li key={comment.id}>{comment.text}</li>
         ))}
       </ul>
     </div>
-  )
+  );
 }

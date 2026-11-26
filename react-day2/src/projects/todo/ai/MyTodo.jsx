@@ -1,18 +1,113 @@
-// 🤖 내 AI Todo
-// AI가 만든 Todo 코드를 이 파일에 통째로 붙여 넣으세요. (export default function MyTodo 는 유지)
-// 저장하면 메뉴 "🤖 내 AI Todo"에서 바로 실행됩니다.
-// 에러가 나도 화면이 하얗게 되지 않고 에러 메시지가 나옵니다 → 메시지를 읽고 고치거나 AI에게 전달하세요.
+import { useState } from "react";
+import styles from "../Todo.module.css";
+
+const FILTERS = [
+  { value: "all", label: "전체" },
+  { value: "active", label: "미완료" },
+  { value: "done", label: "완료" },
+];
 
 export default function MyTodo() {
+  const [todos, setTodos] = useState([]);
+  const [text, setText] = useState("");
+  const [filter, setFilter] = useState("all");
+
+  const visibleTodos = todos.filter((todo) => {
+    if (filter === "active") return !todo.done;
+    if (filter === "done") return todo.done;
+    return true;
+  });
+  const doneCount = todos.filter((todo) => todo.done).length;
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    const trimmedText = text.trim();
+    if (!trimmedText) return;
+
+    setTodos((currentTodos) => [
+      ...currentTodos,
+      { id: Date.now(), text: trimmedText, done: false },
+    ]);
+    setText("");
+  }
+
+  function handleToggle(id) {
+    setTodos((currentTodos) =>
+      currentTodos.map((todo) =>
+        todo.id === id ? { ...todo, done: !todo.done } : todo,
+      ),
+    );
+  }
+
+  function handleDelete(id) {
+    setTodos((currentTodos) => currentTodos.filter((todo) => todo.id !== id));
+  }
+
   return (
-    <div>
-      <h3>🤖 아직 비어 있어요</h3>
-      <p>
-        메뉴 <b>🤖 AI로 만들기 가이드</b>의 1단계 프롬프트로 코드를 받아서
-      </p>
-      <p>
-        <code>src/projects/todo/ai/MyTodo.jsx</code> 에 붙여 넣으세요.
-      </p>
+    <div className={styles.app}>
+      <header className={styles.header}>
+        <h2 className={styles.title}>📝 할 일 목록</h2>
+        <span className={styles.summary}>
+          {doneCount} / {todos.length} 완료
+        </span>
+      </header>
+
+      <form className={styles.form} onSubmit={handleSubmit}>
+        <input
+          className={styles.input}
+          placeholder="할 일을 입력하세요"
+          value={text}
+          onChange={(e) => setText(e.target.value)}
+        />
+        <button className={styles.addButton} type="submit">
+          추가
+        </button>
+      </form>
+
+      <div className={styles.filters}>
+        {FILTERS.map((item) => (
+          <button
+            key={item.value}
+            type="button"
+            className={`${styles.filter} ${filter === item.value ? styles.filterActive : ""}`}
+            onClick={() => setFilter(item.value)}
+          >
+            {item.label}
+          </button>
+        ))}
+      </div>
+
+      {visibleTodos.length === 0 ? (
+        <p className={styles.empty}>할 일이 없습니다 🎉</p>
+      ) : (
+        <ul className={styles.list}>
+          {visibleTodos.map((todo) => (
+            <li
+              key={todo.id}
+              className={`${styles.item} ${todo.done ? styles.done : ""}`}
+            >
+              <input
+                type="checkbox"
+                className={styles.checkbox}
+                checked={todo.done}
+                onChange={() => handleToggle(todo.id)}
+                aria-label={`완료 여부: ${todo.text}`}
+              />
+              <span className={styles.text}>{todo.text}</span>
+              <div className={styles.actions}>
+                <button
+                  type="button"
+                  className={`${styles.iconButton} ${styles.danger}`}
+                  onClick={() => handleDelete(todo.id)}
+                  aria-label={`삭제: ${todo.text}`}
+                >
+                  삭제
+                </button>
+              </div>
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
-  )
+  );
 }

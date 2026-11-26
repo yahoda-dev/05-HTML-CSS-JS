@@ -17,36 +17,46 @@
 // ✅ 확인: 추가 · 체크 · 삭제가 바로 화면에 반영된다
 // ⚠️ push, splice, items[0].done = true 처럼 원본을 고치는 코드는 쓰지 않기 (05-1)
 // 📖 막히면: 05-3 예제
-import { useState } from 'react'
+import { useState } from "react";
 
 export default function Mission() {
-  const [name, setName] = useState('')
+  const [name, setName] = useState("");
   const [items, setItems] = useState([
-    { id: 1, name: '🥛 우유', done: false },
-    { id: 2, name: '🍞 식빵', done: true },
-    { id: 3, name: '🥚 달걀', done: false },
-  ])
+    { id: 1, name: "🥛 우유", done: false },
+    { id: 2, name: "🍞 식빵", done: true },
+    { id: 3, name: "🥚 달걀", done: false },
+  ]);
 
   function handleSubmit(e) {
-    e.preventDefault()
+    e.preventDefault();
     // TODO 1
+    if (!name.trim()) return;
+
+    setItems([...items, { id: Date.now(), name: name.trim(), done: false }]);
+    setName("");
   }
 
   function handleToggle(id) {
-    // TODO 2
-    console.log('체크한 id:', id)
+    setItems(
+      items.map((item) =>
+        item.id === id ? { ...item, done: !item.done } : item,
+      ),
+    );
   }
 
   function handleDelete(id) {
-    // TODO 3
-    console.log('삭제할 id:', id)
+    setItems(items.filter((item) => item.id !== id));
   }
 
   return (
     <div>
       <h3>🛒 장보기 목록 ({items.length})</h3>
       <form onSubmit={handleSubmit}>
-        <input placeholder="살 것" value={name} onChange={(e) => setName(e.target.value)} />
+        <input
+          placeholder="살 것"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+        />
         <button>추가</button>
       </form>
 
@@ -54,7 +64,11 @@ export default function Mission() {
         {items.map((item) => (
           <li key={item.id}>
             <label>
-              <input type="checkbox" checked={item.done} onChange={() => handleToggle(item.id)} />
+              <input
+                type="checkbox"
+                checked={item.done}
+                onChange={() => handleToggle(item.id)}
+              />
               {item.done ? <s>{item.name}</s> : item.name}
             </label>
             <button onClick={() => handleDelete(item.id)}>×</button>
@@ -65,5 +79,5 @@ export default function Mission() {
 
       {/* TODO 4. (도전) 산 것 모두 지우기 */}
     </div>
-  )
+  );
 }

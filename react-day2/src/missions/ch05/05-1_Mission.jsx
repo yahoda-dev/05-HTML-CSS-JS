@@ -23,14 +23,14 @@ export default function Mission() {
   const [cart, setCart] = useState(['🍎 사과'])
 
   function handleAdd(item) {
-    cart.push(item) // 🐞
-    setCart(cart)
+    //cart.push(item) // 🐞
+    setCart([...cart, item])
     console.log('cart 실제 내용:', cart)
   }
 
   function handleClear() {
-    cart.length = 0 // 🐞
-    setCart(cart)
+    //cart.length = 0 // 🐞
+    setCart([])
   }
 
   return (
