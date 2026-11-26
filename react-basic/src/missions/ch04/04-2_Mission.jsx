@@ -17,7 +17,7 @@ import { useState } from "react";
 
 // TODO 3. FruitButton 을 완성하세요
 function FruitButton({ name, onClick }) {
-  return <button onClick={onClick}>{name}</button>;
+  return <button onClick={() => onClick()}>{name}</button>;
 }
 
 export default function Mission() {
