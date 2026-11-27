@@ -17,31 +17,53 @@
 // ✅ 확인: 등록할 때마다 목록 맨 위에 글이 생기고, Network 탭에 POST /posts (201) 가 보인다. Payload에 보낸 데이터가 있다
 // 💡 가짜 서버라 새로고침하면 사라진다. 진짜 서버라면 다시 GET 해도 남아 있다
 // 📖 막히면: 10-4 예제
-import { useState } from 'react'
-import axios from 'axios'
+import { useState } from "react";
+import axios from "axios";
 
-const BASE_URL = 'https://jsonplaceholder.typicode.com'
+const BASE_URL = "https://jsonplaceholder.typicode.com";
 
 export default function Mission() {
-  const [title, setTitle] = useState('')
-  const [status, setStatus] = useState(null)
-  const [posts, setPosts] = useState([])
+  const [title, setTitle] = useState("");
+  const [status, setStatus] = useState(null);
+  const [posts, setPosts] = useState([]);
 
-  function handleSubmit(e) {
-    e.preventDefault()
+  async function handleSubmit(e) {
+    e.preventDefault();
     // TODO 1~4
-    console.log('보낼 제목:', title)
+    //if (!e.target.value) return;
+    if (!title.trim()) return;
+
+    const response = await axios.post(`${BASE_URL}/posts`, {
+      title,
+      body: "새 글입니다.",
+      userId: 1,
+    });
+
+    setStatus(response.status);
+
+    setPosts((previousPosts) => [
+      { ...response.data, id: Date.now() },
+      ...previousPosts,
+    ]);
+
+    setTitle("");
+
+    console.log("보낼 제목:", title);
   }
 
   return (
     <div>
       <h3>📝 글 등록</h3>
       <form onSubmit={handleSubmit}>
-        <input placeholder="제목" value={title} onChange={(e) => setTitle(e.target.value)} />{' '}
+        <input
+          placeholder="제목"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+        />{" "}
         <button>등록</button>
       </form>
       <p>
-        <small>마지막 응답: {status ?? '-'}</small>
+        <small>마지막 응답: {status ?? "-"}</small>
       </p>
       <ul>
         {posts.map((post) => (
@@ -49,5 +71,5 @@ export default function Mission() {
         ))}
       </ul>
     </div>
-  )
+  );
 }

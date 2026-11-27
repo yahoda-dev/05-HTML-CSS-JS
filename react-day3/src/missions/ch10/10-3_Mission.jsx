@@ -16,30 +16,41 @@
 //
 // ✅ 확인: 5를 넣고 불러오면 5번 할 일 제목이 나온다. F12 Network 탭에 /todos/5 요청이 보인다
 // 📖 막히면: 10-3 예제
-import { useState } from 'react'
-import axios from 'axios'
+import { useState } from "react";
+import axios from "axios";
 
-const BASE_URL = 'https://jsonplaceholder.typicode.com'
+const BASE_URL = "https://jsonplaceholder.typicode.com";
 
 export default function Mission() {
-  const [todoId, setTodoId] = useState('1')
-  const [todo, setTodo] = useState(null)
+  const [todoId, setTodoId] = useState("1");
+  const [todo, setTodo] = useState(null);
 
-  function handleLoad() {
+  async function handleLoad() {
     // TODO 1~3
-    console.log('불러올 번호:', todoId)
+    const response = await axios.get(`${BASE_URL}/todos/${todoId}`);
+    setTodo(response.data);
+    console.log("불러올 번호:", todoId);
   }
 
   return (
     <div>
       <h3>✅ 할 일 조회</h3>
-      <input type="number" min={1} max={200} value={todoId} onChange={(e) => setTodoId(e.target.value)} />{' '}
+      <input
+        type="number"
+        min={1}
+        max={200}
+        value={todoId}
+        onChange={(e) => setTodoId(e.target.value)}
+      />{" "}
       <button onClick={handleLoad}>불러오기</button>
-
       {/* TODO 4 */}
       <article>
-        <small>할 일을 불러오면 여기에 보입니다</small>
+        {todo ? (
+          <p>{todo.title}</p>
+        ) : (
+          <small>할 일을 불러오면 여기에 보입니다</small>
+        )}
       </article>
     </div>
-  )
+  );
 }
