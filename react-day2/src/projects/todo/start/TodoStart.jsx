@@ -12,34 +12,38 @@
 //   ① 할 일 등록         ② 완료 여부 변경      ③ 삭제
 //   ④ 전체·완료·미완료 필터                     ⑤ 수정
 //   ⑥ localStorage 저장  ⑦ 컴포넌트 분리 및 리팩토링
-import { useState } from 'react'
-import styles from '../Todo.module.css'
+import { useState } from "react";
+import styles from "../Todo.module.css";
 
 const FILTERS = [
-  { value: 'all', label: '전체' },
-  { value: 'active', label: '미완료' },
-  { value: 'done', label: '완료' },
-]
+  { value: "all", label: "전체" },
+  { value: "active", label: "미완료" },
+  { value: "done", label: "완료" },
+];
 
 const initialTodos = [
-  { id: 1, text: 'React 2일차 복습하기', done: true },
-  { id: 2, text: 'useEffect 예제 다시 보기', done: false },
-]
+  { id: 1, text: "React 2일차 복습하기", done: true },
+  { id: 2, text: "useEffect 예제 다시 보기", done: false },
+];
 
 export default function TodoStart() {
-  const [todos] = useState(initialTodos) // TODO: setTodos도 꺼내 쓰기
-  const [text, setText] = useState('')
-  const filter = 'all' // TODO ④: useState로 바꾸기
+  const [todos, setTodos] = useState(initialTodos); // TODO: setTodos도 꺼내 쓰기
+  const [text, setText] = useState("");
+  const [filter, setFilter] = useState("all");
 
   // TODO ④: filter에 따라 걸러진 목록 계산하기 (state로 만들지 말 것! 05-6)
-  const visibleTodos = todos
+  const visibleTodos = todos.filter((todo) => {
+    if (filter === "active") return !todo.done;
+    if (filter === "done") return todo.done;
+    return true;
+  });
 
   // TODO: 완료 개수 계산하기
-  const doneCount = 0
+  const doneCount = todos.filter((todo) => todo.done).length;
 
   // ① 등록 ---------------------------------------------------------------
   function handleSubmit(e) {
-    e.preventDefault()
+    e.preventDefault();
     // TODO ①
     //  - 앞뒤 공백 제거 후 비어 있으면 return
     //  - { id, text, done } 모양의 새 할 일을 배열 맨 뒤에 추가 (push ✕ → 새 배열로, 05-3)
@@ -79,8 +83,9 @@ export default function TodoStart() {
         {FILTERS.map((f) => (
           <button
             key={f.value}
-            className={`${styles.filter} ${filter === f.value ? styles.filterActive : ''}`}
+            className={`${styles.filter} ${filter === f.value ? styles.filterActive : ""}`}
             // TODO ④: onClick으로 filter 바꾸기
+            onClick={() => setFilter(f.value)}
           >
             {f.label}
           </button>
@@ -90,7 +95,10 @@ export default function TodoStart() {
       {/* TODO: 보여 줄 할 일이 없으면 <p className={styles.empty}>할 일이 없습니다 🎉</p> */}
       <ul className={styles.list}>
         {visibleTodos.map((todo) => (
-          <li key={todo.id} className={`${styles.item} ${todo.done ? styles.done : ''}`}>
+          <li
+            key={todo.id}
+            className={`${styles.item} ${todo.done ? styles.done : ""}`}
+          >
             <input
               type="checkbox"
               className={styles.checkbox}
@@ -114,7 +122,7 @@ export default function TodoStart() {
         ))}
       </ul>
     </div>
-  )
+  );
 }
 
 // ⑥ localStorage 저장 — 새로고침해도 할 일이 남게
