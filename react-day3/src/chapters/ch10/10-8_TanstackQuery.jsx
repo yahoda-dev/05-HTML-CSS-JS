@@ -71,6 +71,8 @@ export default function TanstackQuery() {
   const [show, setShow] = useState(true)
 
   return (
+    // 원래 QueryClientPrvodier는 main.jsx나 App.jsx 같은 최상위에
+    // 설정해야 하지만 수업 예제를 위해서 함수 안에 설정하였다.
     <QueryClientProvider client={queryClient}>
       <div className="stack">
         <div className="row">

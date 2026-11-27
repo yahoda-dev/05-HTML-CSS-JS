@@ -15,52 +15,58 @@
 // ⚠️ 두 값을 한 번에 꺼내려고 selector에서 새 객체를 만들어 돌려주면 v5에서는 무한 렌더링 에러가 난다
 // 📖 막히면: 09-5 예제
 // 🤖 AI에게 물어볼 때: "이 컴포넌트가 필요 없을 때도 다시 렌더링돼. Zustand store를 어떻게 구독하고 있는지 확인해 줘"
-import { create } from 'zustand'
-import RenderBadge from '../../components/RenderBadge'
+import { create } from "zustand";
+import RenderBadge from "../../components/RenderBadge";
 
 const useShopStore = create((set) => ({
-  keyword: '',
+  keyword: "",
   cartCount: 0,
-  userName: '김리액트',
+  userName: "김리액트",
   setKeyword: (keyword) => set({ keyword }),
   addCart: () => set((state) => ({ cartCount: state.cartCount + 1 })),
-}))
+}));
 
 function SearchBox() {
-  const { keyword, setKeyword } = useShopStore() // 🐞
+  const keyword = useShopStore((state) => state.keyword);
+  const setKeyword = useShopStore((state) => state.setKeyword);
   return (
     <article>
-      🔍 <input placeholder="상품 검색" value={keyword} onChange={(e) => setKeyword(e.target.value)} />{' '}
+      🔍{" "}
+      <input
+        placeholder="상품 검색"
+        value={keyword}
+        onChange={(e) => setKeyword(e.target.value)}
+      />{" "}
       <RenderBadge />
     </article>
-  )
+  );
 }
 
 function CartBadge() {
-  const { cartCount } = useShopStore() // 🐞
+  const cartCount = useShopStore((state) => state.cartCount);
   return (
     <article>
       🛒 장바구니 {cartCount}개 <RenderBadge />
     </article>
-  )
+  );
 }
 
 function UserGreeting() {
-  const { userName } = useShopStore() // 🐞
+  const userName = useShopStore((state) => state.userName);
   return (
     <article>
       👤 {userName}님, 안녕하세요 <RenderBadge />
     </article>
-  )
+  );
 }
 
 function AddButton() {
-  const { addCart } = useShopStore() // 🐞
+  const addCart = useShopStore((state) => state.addCart);
   return (
     <article>
       <button onClick={addCart}>장바구니 담기</button> <RenderBadge />
     </article>
-  )
+  );
 }
 
 export default function Mission() {
@@ -71,5 +77,5 @@ export default function Mission() {
       <UserGreeting />
       <AddButton />
     </div>
-  )
+  );
 }

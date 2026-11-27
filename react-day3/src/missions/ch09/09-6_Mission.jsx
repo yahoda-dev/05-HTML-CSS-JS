@@ -15,43 +15,53 @@
 // ✅ 확인: 새로고침해도 찜이 남아 있다. 컴포넌트 코드는 한 줄도 바꾸지 않았다
 // ⚠️ 괄호 짝이 헷갈리기 쉽다 → persist는 create 바로 안쪽에서, 원래 있던 함수를 통째로 감싼다
 // 📖 막히면: 09-6 예제
-import { create } from 'zustand'
+import { create } from "zustand";
+import { persist } from "zustand/middleware";
 
 const PRODUCTS = [
-  { id: 1, name: '🎧 무선 이어폰' },
-  { id: 2, name: '⌨️ 기계식 키보드' },
-  { id: 3, name: '🖱️ 버티컬 마우스' },
-]
+  { id: 1, name: "🎧 무선 이어폰" },
+  { id: 2, name: "⌨️ 기계식 키보드" },
+  { id: 3, name: "🖱️ 버티컬 마우스" },
+];
 
-// TODO 2~3. persist로 감싸기
-const useWishStore = create((set) => ({
-  ids: [],
-  toggle: (id) =>
-    set((state) => ({
-      ids: state.ids.includes(id) ? state.ids.filter((wishId) => wishId !== id) : [...state.ids, id],
-    })),
-}))
+const useWishStore = create(
+  persist(
+    (set) => ({
+      ids: [],
+      toggle: (id) =>
+        set((state) => ({
+          ids: state.ids.includes(id)
+            ? state.ids.filter((wishId) => wishId !== id)
+            : [...state.ids, id],
+        })),
+    }),
+    { name: "mission-09-6-wish" },
+  ),
+);
 
 function ProductCard({ product }) {
-  const ids = useWishStore((state) => state.ids)
-  const toggle = useWishStore((state) => state.toggle)
-  const isWished = ids.includes(product.id)
+  const ids = useWishStore((state) => state.ids);
+  const toggle = useWishStore((state) => state.toggle);
+  const isWished = ids.includes(product.id);
 
   return (
     <article>
-      {product.name} <button onClick={() => toggle(product.id)}>{isWished ? '♥ 찜함' : '♡ 찜'}</button>
+      {product.name}{" "}
+      <button onClick={() => toggle(product.id)}>
+        {isWished ? "♥ 찜함" : "♡ 찜"}
+      </button>
     </article>
-  )
+  );
 }
 
 function StorageView() {
-  useWishStore((state) => state.ids) // 찜이 바뀌면 이 칸도 다시 그려지게
+  useWishStore((state) => state.ids); // 찜이 바뀌면 이 칸도 다시 그려지게
   return (
     <article>
       <small>localStorage에 저장된 값 (mission-09-6-wish)</small>
-      <pre>{localStorage.getItem('mission-09-6-wish') ?? '(아직 없음)'}</pre>
+      <pre>{localStorage.getItem("mission-09-6-wish") ?? "(아직 없음)"}</pre>
     </article>
-  )
+  );
 }
 
 export default function Mission() {
@@ -63,5 +73,5 @@ export default function Mission() {
       ))}
       <StorageView />
     </div>
-  )
+  );
 }

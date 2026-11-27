@@ -1,8 +1,10 @@
 import { create } from 'zustand'
 
 const useCartStore = create((set) => ({
+  // 장바구니 목록
+  // [{id, name, price, qrty}, ...]   <- state들
+  // 각각의 state 변경이 가능한 Actions들을 반환한다
   items: [],
-
   addItem: (product) =>
     set((state) => {
       const exists = state.items.find((item) => item.id === product.id)
@@ -16,6 +18,7 @@ const useCartStore = create((set) => ({
       return { items: [...state.items, { ...product, qty: 1 }] }
     }),
 
+  // 수량 변경
   changeQty: (id, delta) =>
     set((state) => ({
       items: state.items
